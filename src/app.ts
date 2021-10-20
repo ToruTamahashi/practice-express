@@ -1,6 +1,15 @@
 import express from 'express';
+import indexRoute from './router/index';
+import { createProduct, getProducts } from './db';
 const app: express.Express = express();
 const port = 3000;
+
+app.use(
+  express.urlencoded({
+    extended: true,
+  }),
+);
+app.use(express.json());
 
 // useが記述されいた場合それ以降のコードはuseの内容がtrueでないと実行できなくなる(認証とかに使う)
 //CROS対応（というか完全無防備：本番環境ではだめ絶対）
@@ -11,41 +20,28 @@ app.use((req: express.Request, res: express.Response, next: express.NextFunction
   next();
 });
 
-app.get('/', (req: express.Request, res: express.Response) => res.send('Hello World!!'));
+app.use('/api', indexRoute);
 
-app.get('/users', (req: express.Request, res: express.Response) => {
-  res.json([
-    {
-      id: 1,
-      name: 'User Userson',
-    },
-  ]);
+app.post('/products', (req: express.Request, res: express.Response) => {
+  createProduct(req, res)
+    .then(() => {
+      console.log('成功');
+    })
+    .catch(() => {
+      console.log('失敗');
+    });
 });
 
-app.get('/products', (req: any, res: any) => {
-  res.json([
-    {
-      id: 1,
-      name: 'The Bluest Eye',
-    },
-  ]);
-});
-
-type User = {
-  id: number;
-  name: string;
-  email: string;
-};
-
-const users: User[] = [
-  { id: 1, name: 'User1', email: 'user1@test.local' },
-  { id: 2, name: 'User2', email: 'user2@test.local' },
-  { id: 3, name: 'User3', email: 'user3@test.local' },
-];
-
-//一覧取得
-app.get('/users2', (req: express.Request, res: express.Response) => {
-  res.send(JSON.stringify(users));
+app.get('/products', (req: express.Request, res: express.Response) => {
+  getProducts(req, res)
+    .then(() => {
+      console.log('成功');
+    })
+    .catch(() => {
+      console.log('失敗');
+    });
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+export default app;
