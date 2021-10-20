@@ -8,6 +8,6 @@
 | npx ts-node app.ts  
 
 
-### tsファイルをホットリロード
-nodemon.jsonに準拠
+### tsファイルをホットリロード(基本はこれでよし)
+nodemon.jsonに準拠(どのディレクトリを監視して、どんなコードを実行するか指定している)
 | nodemon
