@@ -15,7 +15,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: root
       MONGO_INITDB_DATABASE: test_db
       TZ: Asia/Tokyo
-  mongo-express:
+  mongo-express: # mongoDBの管理画面を作ってくれるサービス
     image: mongo-express:0.54
     ports:
       - "8081:8081"
