@@ -42,6 +42,15 @@ app.get('/products', (req: express.Request, res: express.Response) => {
     });
 });
 
+app.post("/records", (req: express.Request, res: express.Response) => {
+  const data = res.body;
+  const query = `SELECT * FROM health_records WHERE id = (${data.id})`;
+  connection.query(query, (err, rows) => {
+    if(err) throw err;
+    res.json({data:rows});
+  });
+
+});
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 export default app;
